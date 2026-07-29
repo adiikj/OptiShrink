@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import Header from '../dashboard/Header';
 import VHeader from '../dashboard/VHeader';
@@ -117,7 +119,7 @@ const History: React.FC = () => {
                           alt={`Image ${index + 1}`}
                           className="w-20 h-20 object-cover rounded-md shadow-sm"
                           onError={(e) => {
-                            e.currentTarget.src = pdf; // Placeholder image URL
+                            e.currentTarget.src = pdf.src; // Placeholder image URL
                           }}
                         />
                       </td>

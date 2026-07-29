@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState } from 'react';
-import { optimizeImage } from '../../api/api'; 
+import { optimizeImage } from '../../api/api';
 
 const Image: React.FC = () => {
     const [isProcessing, setIsProcessing] = useState(false);
@@ -243,7 +245,7 @@ const Image: React.FC = () => {
                                 Login Required
                             </h2>
                             <p className="text-gray-600 mb-6">
-                                You've reached the maximum upload limit. Log in for unlimited access!
+                                You&apos;ve reached the maximum upload limit. Log in for unlimited access!
                             </p>
                             <button
                                 className="bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-700 transition"

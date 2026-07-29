@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const USER_URL = import.meta.env.VITE_API_USER_URL;
-const BACKEND_URL = import.meta.env.VITE_API_BACKEND_URL;
+const USER_URL = process.env.NEXT_PUBLIC_API_USER_URL;
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_BACKEND_URL;
 
 interface LoginResponse {
   data: {
@@ -34,6 +34,16 @@ interface UserProfile {
   name: string;
 }
 
+interface ApiErrorLike {
+  response?: { data?: { message?: string } };
+  message?: string;
+}
+
+const getErrorMessage = (error: unknown, fallback: string): string => {
+  const err = error as ApiErrorLike;
+  return err?.response?.data?.message || err?.message || fallback;
+};
+
 export const loginUser = async (
   emailOrUsername: string,
   password: string
@@ -53,20 +63,17 @@ export const loginUser = async (
 
     // Save the access token in localStorage (if it's part of the response)
     localStorage.setItem("accessToken", accessToken);
-    
+
     // Optionally, store the refreshToken if needed
     localStorage.setItem("refreshToken", refreshToken);
 
     return response.data; // Return server response data (user data, success message, etc.)
-  } catch (error: any) {
+  } catch (error) {
     // Log detailed error info for debugging
-    console.error("Login API Error:", error.response || error.message);
+    console.error("Login API Error:", (error as ApiErrorLike)?.response || (error as ApiErrorLike)?.message);
 
     // Extract error message from server or fallback to a default message
-    const message =
-      error?.response?.data?.message ||
-      error.message ||
-      "An unexpected error occurred while logging in";
+    const message = getErrorMessage(error, "An unexpected error occurred while logging in");
 
     throw new Error(message); // Re-throw error with user-friendly message
   }
@@ -85,9 +92,8 @@ export const logoutUser = async (token: string): Promise<string> => {
     );
 
     return response.data.message; // Return success message
-  } catch (error: any) {
-    const message = error?.response?.data?.message || error.message || "Error logging out.";
-    throw new Error(message);
+  } catch (error) {
+    throw new Error(getErrorMessage(error, "Error logging out."));
   }
 };
 
@@ -110,11 +116,9 @@ export const getUserProfile = async (): Promise<UserProfile> => {
     );
 
     return response.data.data; // Extract the "data" field containing the user profile
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error fetching user profile:", error);
-    const message =
-      error.response?.data?.message || error.message || "Failed to fetch user profile.";
-    throw new Error(message);
+    throw new Error(getErrorMessage(error, "Failed to fetch user profile."));
   }
 };
 
@@ -125,9 +129,8 @@ export const registerUser = async (
   try {
     const response = await axios.post<RegisterUserResponse>(`${USER_URL}/register`, input);
     return response.data; // Return success message for OTP sent
-  } catch (error: any) {
-    const message = error?.response?.data?.message || error.message || "Error registering user.";
-    throw new Error(message);
+  } catch (error) {
+    throw new Error(getErrorMessage(error, "Error registering user."));
   }
 };
 
@@ -136,11 +139,11 @@ export const compressPdf: (file: File, compressionLevel: string) => Promise<Blob
   try {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("compressionLevel", compressionLevel); 
+    formData.append("compressionLevel", compressionLevel);
 
     const token = localStorage.getItem("accessToken");
 
-    const headers: any = { 'Content-Type': 'multipart/form-data' };
+    const headers: Record<string, string> = { 'Content-Type': 'multipart/form-data' };
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
@@ -159,14 +162,13 @@ export const compressPdf: (file: File, compressionLevel: string) => Promise<Blob
     } else {
       throw new Error(response.data.message || 'Error compressing PDF.');
     }
-  } catch (error: any) {
-    const message = error?.response?.data?.message || error.message || "Error compressing PDF.";
-    throw new Error(message);
+  } catch (error) {
+    throw new Error(getErrorMessage(error, "Error compressing PDF."));
   }
 }
 
 // Frontend API function to compress image
-export const optimizeImage = async (file: File, compressionLevel: string): Promise<any> => {
+export const optimizeImage = async (file: File, compressionLevel: string) => {
   try {
     const formData = new FormData();
     formData.append('compressionLevel', compressionLevel);
@@ -175,7 +177,7 @@ export const optimizeImage = async (file: File, compressionLevel: string): Promi
     const token = localStorage.getItem("accessToken");
 
     // If no token, don't send the Authorization header
-    const headers: any = { 'Content-Type': 'multipart/form-data' };
+    const headers: Record<string, string> = { 'Content-Type': 'multipart/form-data' };
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
@@ -185,14 +187,12 @@ export const optimizeImage = async (file: File, compressionLevel: string): Promi
     });
 
     return response.data; // Return the optimized image details
-  } catch (error: any) {
-    const message =
-      error?.response?.data?.message || error.message || 'Failed to compress image';
-    throw new Error(message);
+  } catch (error) {
+    throw new Error(getErrorMessage(error, 'Failed to compress image'));
   }
 };
 
-export const getAllLinks = async (): Promise<any> => {
+export const getAllLinks = async () => {
   try {
     const token = localStorage.getItem("accessToken");
 
@@ -207,14 +207,13 @@ export const getAllLinks = async (): Promise<any> => {
     });
 
     return response.data; // Return the list of image links
-  } catch (error: any) {
-    const message = error?.response?.data?.message || error.message || "Failed to fetch image links";
-    throw new Error(message);
+  } catch (error) {
+    throw new Error(getErrorMessage(error, "Failed to fetch image links"));
   }
 };
 
 // API function to delete a file
-export const deleteLink = async (fileId: string): Promise<any> => {
+export const deleteLink = async (fileId: string) => {
   try {
     const token = localStorage.getItem("accessToken"); // Ensure the token key is 'accessToken'
 
@@ -233,12 +232,8 @@ export const deleteLink = async (fileId: string): Promise<any> => {
     });
 
     return response.data; // Return the API response data upon success
-  } catch (error: any) {
-    console.error('Error deleting the file:', error.response?.data || error.message);
-    throw new Error(error.response?.data?.message || 'An error occurred while deleting the file');
+  } catch (error) {
+    console.error('Error deleting the file:', (error as ApiErrorLike)?.response?.data || (error as ApiErrorLike)?.message);
+    throw new Error(getErrorMessage(error, 'An error occurred while deleting the file'));
   }
 };
-
-
-
-

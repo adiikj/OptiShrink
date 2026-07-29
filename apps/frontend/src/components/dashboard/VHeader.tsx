@@ -1,5 +1,8 @@
+"use client";
+
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom"; // Importing NavLink
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Home,
   Settings,
@@ -11,6 +14,28 @@ import {
   Clock,
   BarChart3,
 } from "lucide-react";
+
+interface SidebarLinkProps {
+  href: string;
+  end?: boolean; // Ensures exact match, mirrors react-router's NavLink `end` prop
+  children: React.ReactNode;
+}
+
+const SidebarLink: React.FC<SidebarLinkProps> = ({ href, end, children }) => {
+  const pathname = usePathname();
+  const isActive = end ? pathname === href : pathname.startsWith(href);
+
+  return (
+    <Link
+      href={href}
+      className={`flex items-center space-x-3 text-base sm:text-lg md:text-lg px-4 py-2 rounded-md ${
+        isActive ? "text-blue-600 bg-white" : "text-white hover:bg-blue-700"
+      }`}
+    >
+      {children}
+    </Link>
+  );
+};
 
 const VHeader: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false); // Sidebar closed by default on mobile
@@ -39,140 +64,58 @@ const VHeader: React.FC = () => {
         <nav className="flex-grow p-4">
           <ul className="space-y-4">
             <li>
-              <NavLink
-                to="/dashboard"
-                end // Ensures exact match
-                className={({ isActive }) =>
-                  `flex items-center space-x-3 text-base sm:text-lg md:text-lg px-4 py-2 rounded-md ${
-                    isActive
-                      ? "text-blue-600 bg-white"
-                      : "text-white hover:bg-blue-700"
-                  }`
-                }
-              >
+              <SidebarLink href="/dashboard" end>
                 <Home className="w-6 h-6" />
                 <span>Home</span>
-              </NavLink>
+              </SidebarLink>
             </li>
             <li>
-              <NavLink
-                to="/dashboard/optimizeimage"
-                className={({ isActive }) =>
-                  `flex items-center space-x-3 text-base sm:text-lg md:text-lg px-4 py-2 rounded-md ${
-                    isActive
-                      ? "text-blue-600 bg-white"
-                      : "text-white hover:bg-blue-700"
-                  }`
-                }
-              >
+              <SidebarLink href="/dashboard/optimizeimage">
                 <Image className="w-6 h-6" />
                 <span>Optimize Image</span>
-              </NavLink>
+              </SidebarLink>
             </li>
             <li>
-              <NavLink
-                to="/dashboard/batchcompress"
-                className={({ isActive }) =>
-                  `flex items-center space-x-3 text-base sm:text-lg md:text-lg px-4 py-2 rounded-md ${
-                    isActive
-                      ? "text-blue-600 bg-white"
-                      : "text-white hover:bg-blue-700"
-                  }`
-                }
-              >
+              <SidebarLink href="/dashboard/batchcompress">
                 <Layers className="w-6 h-6" />
                 <span>Batch Compress</span>
-              </NavLink>
+              </SidebarLink>
             </li>
             <li>
-              <NavLink
-                to="/dashboard/compresspdf"
-                className={({ isActive }) =>
-                  `flex items-center space-x-3 text-base sm:text-lg md:text-lg px-4 py-2 rounded-md ${
-                    isActive
-                      ? "text-blue-600 bg-white"
-                      : "text-white hover:bg-blue-700"
-                  }`
-                }
-              >
+              <SidebarLink href="/dashboard/compresspdf">
                 <File className="w-6 h-6" />
                 <span>Compressed PDF</span>
-              </NavLink>
+              </SidebarLink>
             </li>
             <li>
-              <NavLink
-                to="/dashboard/history"
-                className={({ isActive }) =>
-                  `flex items-center space-x-3 text-base sm:text-lg md:text-lg px-4 py-2 rounded-md ${
-                    isActive
-                      ? "text-blue-600 bg-white"
-                      : "text-white hover:bg-blue-700"
-                  }`
-                }
-              >
+              <SidebarLink href="/dashboard/history">
                 <Clock className="w-6 h-6" />
                 <span>History</span>
-              </NavLink>
+              </SidebarLink>
             </li>
             <li>
-              <NavLink
-                to="/dashboard/analytics"
-                className={({ isActive }) =>
-                  `flex items-center space-x-3 text-base sm:text-lg md:text-lg px-4 py-2 rounded-md ${
-                    isActive
-                      ? "text-blue-600 bg-white"
-                      : "text-white hover:bg-blue-700"
-                  }`
-                }
-              >
+              <SidebarLink href="/dashboard/analytics">
                 <BarChart3 className="w-6 h-6" />
                 <span>Analytics</span>
-              </NavLink>
+              </SidebarLink>
             </li>
             <li>
-              <NavLink
-                to="/dashboard/settings"
-                className={({ isActive }) =>
-                  `flex items-center space-x-3 text-base sm:text-lg md:text-lg px-4 py-2 rounded-md ${
-                    isActive
-                      ? "text-blue-600 bg-white"
-                      : "text-white hover:bg-blue-700"
-                  }`
-                }
-              >
+              <SidebarLink href="/dashboard/settings">
                 <Settings className="w-6 h-6" />
                 <span>Settings</span>
-              </NavLink>
+              </SidebarLink>
             </li>
             <li>
-              <NavLink
-                to="/dashboard/about"
-                className={({ isActive }) =>
-                  `flex items-center space-x-3 text-base sm:text-lg md:text-lg px-4 py-2 rounded-md ${
-                    isActive
-                      ? "text-blue-600 bg-white"
-                      : "text-white hover:bg-blue-700"
-                  }`
-                }
-              >
+              <SidebarLink href="/dashboard/about">
                 <Info className="w-6 h-6" />
                 <span>About</span>
-              </NavLink>
+              </SidebarLink>
             </li>
             <li>
-              <NavLink
-                to="/dashboard/help"
-                className={({ isActive }) =>
-                  `flex items-center space-x-3 text-base sm:text-lg md:text-lg px-4 py-2 rounded-md ${
-                    isActive
-                      ? "text-blue-600 bg-white"
-                      : "text-white hover:bg-blue-700"
-                  }`
-                }
-              >
+              <SidebarLink href="/dashboard/help">
                 <HelpCircle className="w-6 h-6" />
                 <span>Help</span>
-              </NavLink>
+              </SidebarLink>
             </li>
           </ul>
         </nav>

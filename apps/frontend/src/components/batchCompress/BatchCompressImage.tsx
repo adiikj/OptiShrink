@@ -1,8 +1,10 @@
+"use client";
+
 import React, { useState } from 'react';
 import { optimizeImage } from '../../api/api'; // Assuming you have optimizeImage function
 import Header from '../dashboard/Header';
 import VHeader from '../dashboard/VHeader';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const BatchCompress: React.FC = () => {
     const [isProcessing, setIsProcessing] = useState(false);
@@ -69,7 +71,7 @@ const BatchCompress: React.FC = () => {
                     <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 ">
                         Batch Optimize Your Images
                     </h1>
-                    <Link to="/dashboard/batchcompress">
+                    <Link href="/dashboard/batchcompress">
                     <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl'>Go Back</button>
                     </Link>
                     </div>

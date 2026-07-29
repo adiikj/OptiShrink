@@ -1,7 +1,9 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import VHeader from "./VHeader";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { getUserProfile } from "../../api/api";
 import { FileImage, Archive, FileText, History, Settings, HelpCircle } from "lucide-react"; // Importing lucide-react icons
 
@@ -14,8 +16,8 @@ const Dashboard: React.FC = () => {
       try {
         const profile = await getUserProfile();
         setUserName(profile.name); // Set the user's name
-      } catch (err: any) {
-        setError(err.message || 'Failed to fetch user profile.'); // Handle errors
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch user profile.'); // Handle errors
       }
     };
 
@@ -50,7 +52,7 @@ const Dashboard: React.FC = () => {
           {/* Quick Access Links */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
             <Link
-              to="/dashboard/optimizeimage"
+              href="/dashboard/optimizeimage"
               className="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-100 transition"
             >
               <FileImage className="text-blue-600 text-3xl mb-2" />
@@ -58,7 +60,7 @@ const Dashboard: React.FC = () => {
               <p className="text-gray-500">Easily optimize your images for better performance.</p>
             </Link>
             <Link
-              to="/dashboard/batchcompress"
+              href="/dashboard/batchcompress"
               className="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-100 transition"
             >
               <Archive className="text-blue-600 text-3xl mb-2" />
@@ -66,7 +68,7 @@ const Dashboard: React.FC = () => {
               <p className="text-gray-500">Compress multiple files in one go.</p>
             </Link>
             <Link
-              to="/dashboard/compresspdf"
+              href="/dashboard/compresspdf"
               className="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-100 transition"
             >
               <FileText className="text-blue-600 text-3xl mb-2" />
@@ -74,7 +76,7 @@ const Dashboard: React.FC = () => {
               <p className="text-gray-500">Easily compress your PDFs for better performance.</p>
             </Link>
             <Link
-              to="/dashboard/history"
+              href="/dashboard/history"
               className="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-100 transition"
             >
               <History className="text-blue-600 text-3xl mb-2" />
@@ -82,7 +84,7 @@ const Dashboard: React.FC = () => {
               <p className="text-gray-500">Check your activity log and file history.</p>
             </Link>
             <Link
-              to="/dashboard/settings"
+              href="/dashboard/settings"
               className="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-100 transition"
             >
               <Settings className="text-blue-600 text-3xl mb-2" />
@@ -90,7 +92,7 @@ const Dashboard: React.FC = () => {
               <p className="text-gray-500">Manage your preferences and account settings.</p>
             </Link>
             <Link
-              to="/dashboard/help"
+              href="/dashboard/help"
               className="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl hover:bg-gray-100 transition"
             >
               <HelpCircle className="text-blue-600 text-3xl mb-2" />

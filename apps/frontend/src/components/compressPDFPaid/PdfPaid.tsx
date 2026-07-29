@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 import Header from '../dashboard/Header';
@@ -107,7 +109,7 @@ const File: React.FC = () => {
                 <p className="text-gray-600 mb-3 text-center">
                     Reduce PDF size while retaining quality. Perfect for web, emails, and more.
                 </p>
-                <p className="text-red-600 mb-8 text-center">PDF Size Shouldn't be more than 10MB</p>
+                <p className="text-red-600 mb-8 text-center">PDF Size Shouldn&apos;t be more than 10MB</p>
 
                 <div className={`grid grid-cols-1 gap-8 ${selectedFile ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}>
                     {/* File Upload Section */}

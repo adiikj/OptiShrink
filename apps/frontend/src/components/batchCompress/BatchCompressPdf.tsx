@@ -1,9 +1,11 @@
+"use client";
+
 import React, { useState } from 'react';
 import * as pdfjsLib from 'pdfjs-dist';
 import Header from '../dashboard/Header';
 import VHeader from '../dashboard/VHeader';
 import { compressPdf } from '../../api/api';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 // Configure pdf.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
@@ -122,14 +124,14 @@ const BatchCompressPdf: React.FC = () => {
                     <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 text-center">
                         Batch Compress Your PDFs
                     </h1>
-                    <Link to="/dashboard/batchcompress">
+                    <Link href="/dashboard/batchcompress">
                     <button className='bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl'>Go Back</button>
                     </Link>
                     </div>
                     <p className="text-gray-600 text-center mb-3">
                         Reduce Multiple PDF size while retaining quality. Perfect for web, emails, and more.
                     </p>
-                    <p className="text-red-600 mb-8 text-center">PDF Size Shouldn't be more than 10MB</p>
+                    <p className="text-red-600 mb-8 text-center">PDF Size Shouldn&apos;t be more than 10MB</p>
 
                     <div className="grid grid-cols-1 gap-8">
                         <div className="border-2 border-dashed border-gray-300 rounded-lg p-10 hover:border-blue-500 transition">

@@ -19,7 +19,7 @@ const Help: React.FC = () => {
                         <ul className="space-y-6">
                             <li>
                                 <h3 className="font-semibold text-xl md:text-2xl">How do I upload my files?</h3>
-                                <p className="text-gray-600 text-base md:text-lg">Simply click the "Browse" button or drag and drop your image or PDF into the upload area.</p>
+                                <p className="text-gray-600 text-base md:text-lg">Simply click the &quot;Browse&quot; button or drag and drop your image or PDF into the upload area.</p>
                             </li>
                             <li>
                                 <h3 className="font-semibold text-xl md:text-2xl">What file formats are supported?</h3>

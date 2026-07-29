@@ -1,11 +1,13 @@
+"use client";
+
 import React, { useState, useEffect, FormEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { loginUser } from "../../api/api"; // Replace with the correct import path for your loginUser API
 import Cookies from "js-cookie";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { login } from "../../redux/authSlice"; // Adjust to your actual Redux slice action path
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 interface RootState {
   auth: {
@@ -19,16 +21,16 @@ const SignIn: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dashboard");
+      router.push("/dashboard");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, router]);
 
   const handleSignIn = async (e: FormEvent) => {
     e.preventDefault();
@@ -48,8 +50,8 @@ const SignIn: React.FC = () => {
 
       dispatch(login(accessToken));
       localStorage.setItem("authToken", accessToken);
-    } catch (err: any) {
-      setError(err?.message || "Something went wrong. Please try again.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -134,8 +136,8 @@ const SignIn: React.FC = () => {
           {/* Footer */}
           <div className="mt-6 text-center">
             <p className="text-gray-600 font-medium">
-              Don't have an account?{' '}
-              <Link to="/signup" className="text-blue-600 hover:underline font-bold">
+              Don&apos;t have an account?{' '}
+              <Link href="/signup" className="text-blue-600 hover:underline font-bold">
                 Sign up here
               </Link>
             </p>

@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import * as pdfjsLib from 'pdfjs-dist';
 import { compressPdf } from '../../api/api';
 
@@ -15,7 +17,7 @@ const File: React.FC = () => {
     const [compressedPdfUrl, setCompressedPdfUrl] = useState<string | null>(null);
     const [compressionCount, setCompressionCount] = useState(0);
     const [limitReached, setLimitReached] = useState(false);
-    const navigate = useNavigate();
+    const router = useRouter();
 
     const MAX_FREE_COMPRESSIONS = 5;
 
@@ -109,7 +111,7 @@ const File: React.FC = () => {
     };
 
     const handleLoginClick = () => {
-        navigate('/login');
+        router.push('/login');
     };
 
     return (
@@ -119,7 +121,7 @@ const File: React.FC = () => {
                 <p className="text-gray-600 mb-3 text-center">
                     Reduce PDF size while retaining quality. Perfect for web, emails, and more.
                 </p>
-                <p className="text-red-600 mb-8 text-center">PDF Size Shouldn't be more than 10MB</p>
+                <p className="text-red-600 mb-8 text-center">PDF Size Shouldn&apos;t be more than 10MB</p>
 
                 <div className={`grid grid-cols-1 gap-8 ${selectedFile ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}>
                     {/* File Upload Section */}

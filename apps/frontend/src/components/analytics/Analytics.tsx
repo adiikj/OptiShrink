@@ -1,10 +1,19 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import Header from '../dashboard/Header';
 import VHeader from '../dashboard/VHeader';
 import { FileIcon, DownloadIcon, ImageIcon, FileTextIcon } from 'lucide-react'; // Importing Lucide icons
 
+interface AnalyticsData {
+    totalShortenedFiles: number;
+    totalDownloads: number;
+    totalImages: number;
+    totalPDFs: number;
+}
+
 const Analytics: React.FC = () => {
-    const [analyticsData, setAnalyticsData] = useState<any>(null);
+    const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
 
     useEffect(() => {
         // Simulating fetching analytics data

@@ -1,17 +1,19 @@
+"use client";
+
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { FileImage, FileText } from 'lucide-react';
 import Header from '../dashboard/Header';
 import VHeader from '../dashboard/VHeader';
 
 const Choice: React.FC = () => {
-    const navigate = useNavigate();
+    const router = useRouter();
 
     const handleChoice = (type: 'image' | 'pdf') => {
         if (type === 'image') {
-            navigate('/dashboard/batchcompress/image');
+            router.push('/dashboard/batchcompress/image');
         } else if (type === 'pdf') {
-            navigate('/dashboard/batchcompress/pdf');
+            router.push('/dashboard/batchcompress/pdf');
         }
     };
 

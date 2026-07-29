@@ -1,7 +1,7 @@
 import React from 'react';
 import herobanner from '../../assets/herobanner.jpg';
 import herobanner2 from '../../assets/herobanner2.jpg';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const Hero: React.FC = () => {
     return (
@@ -18,7 +18,7 @@ const Hero: React.FC = () => {
                     </p>
                     <div className="flex justify-center md:justify-start space-x-4">
                         <Link
-                            to="/optimizeimage"
+                            href="/optimizeimage"
                             className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition duration-300"
                         >
                             Try for Free
@@ -36,12 +36,12 @@ const Hero: React.FC = () => {
                 <div className="md:w-1/2 md:flex justify-center relative hidden">
                     <div className="relative w-80 h-80 md:w-[400px] md:h-[400px]">
                         <img
-                            src={herobanner}
+                            src={herobanner.src}
                             alt="File Compression Illustration"
                             className="absolute -top-10 -left-12 w-full h-full object-cover rounded-lg shadow-lg"
                         />
                         <img
-                            src={herobanner2}
+                            src={herobanner2.src}
                             alt="Image Compression Illustration"
                             className="absolute -bottom-12 -right-32 w-72 h-72 object-cover rounded-lg shadow-lg"
                         />

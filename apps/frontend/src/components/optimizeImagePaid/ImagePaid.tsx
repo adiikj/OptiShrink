@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { optimizeImage } from '../../api/api'; // Assuming you have optimizeImage function
 import Header from '../dashboard/Header';

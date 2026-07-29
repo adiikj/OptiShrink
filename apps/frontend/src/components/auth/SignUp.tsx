@@ -1,5 +1,8 @@
+"use client";
+
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { registerUser } from '../../api/api';
 
@@ -14,7 +17,7 @@ const SignUp: React.FC = () => {
   });
 
   const [error, setError] = useState<string>('');
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,10 +47,10 @@ const SignUp: React.FC = () => {
 
       // Redirect after successful registration
       alert('Registration successful! Please signin to continue.');
-      navigate('/signin'); // Assuming you want to navigate to an OTP page
-    } catch (err: any) {
+      router.push('/signin'); // Assuming you want to navigate to an OTP page
+    } catch (err) {
       console.error('Registration error:', err);
-      setError(err?.message || 'Something went wrong. Please try again.');
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -185,7 +188,7 @@ const SignUp: React.FC = () => {
           <div className="mt-6 text-center">
             <p className="text-gray-600 font-medium">
               Already have an account?{' '}
-              <Link to="/signin" className="text-blue-600 hover:underline font-bold">
+              <Link href="/signin" className="text-blue-600 hover:underline font-bold">
                 Sign in here
               </Link>
             </p>
