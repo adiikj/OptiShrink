@@ -44,9 +44,22 @@ const Footer: React.FC = () => {
                 {/* Bottom Section */}
                 <div className="flex flex-col md:flex-row justify-between items-center">
                     {/* Copyright */}
-                    <p className="text-gray-600 text-sm text-center md:text-left">
-                        &copy; 2025 OptiShrink. All rights reserved.
-                    </p>
+                    <div className="text-center md:text-left">
+                        <p className="text-gray-600 text-sm">
+                            &copy; 2025 OptiShrink. All rights reserved.
+                        </p>
+                        <p className="text-gray-500 text-xs mt-1">
+                            Designed and developed by{' '}
+                            <a
+                                href="https://adiikj.dev"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-semibold text-blue-500 hover:text-blue-600 transition duration-300"
+                            >
+                                Aditya
+                            </a>
+                        </p>
+                    </div>
 
                     {/* Social Media Links */}
                     <ul className="flex space-x-4 mt-4 md:mt-0">
