@@ -20,14 +20,14 @@ const mono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://optishrink.vercel.app"),
   title: {
-    default: "OptiShrink — compress PDFs and optimize images",
-    template: "%s — OptiShrink",
+    default: "OptiShrink: compress PDFs and optimize images",
+    template: "%s | OptiShrink",
   },
   description:
     "A focused file compression tool for PDFs and images. Three levels, batch runs, real before-and-after sizes, and a history that stays with you.",
   keywords: ["compress PDF", "optimize images", "image compression", "PDF compressor", "OptiShrink"],
   openGraph: {
-    title: "OptiShrink — compress PDFs and optimize images",
+    title: "OptiShrink: compress PDFs and optimize images",
     description:
       "A focused file compression tool for PDFs and images. Three levels, batch runs, real before-and-after sizes, and a history that stays with you.",
     type: "website",

@@ -7,7 +7,7 @@ export const faqItems = [
   {
     question: "What happens to my files after compression?",
     answer:
-      "Uploads are processed through Cloudinary for images and pdf.co for PDFs. Temporary copies on our server are deleted as soon as the request finishes. A history entry stores the processed file URL, original name, sizes, and timestamp — nothing more.",
+      "Uploads are processed through Cloudinary for images and pdf.co for PDFs. Temporary copies on our server are deleted as soon as the request finishes. A history entry stores the processed file URL, original name, sizes, and timestamp. Nothing more.",
   },
   {
     question: "Which formats and limits are supported?",

@@ -2,10 +2,10 @@
 
 A small compression studio for PDFs and images. Three tuned levels, batch runs, and a history built on real before-and-after byte counts.
 
-- **Frontend** — Next.js 15 App Router, TypeScript, Tailwind CSS
-- **API** — Express 4, TypeScript, Zod
-- **Data** — PostgreSQL with Drizzle ORM
-- **Compression** — Cloudinary (images) and pdf.co (PDFs)
+- **Frontend**: Next.js 15 App Router, TypeScript, Tailwind CSS
+- **API**: Express 4, TypeScript, Zod
+- **Data**: PostgreSQL with Drizzle ORM
+- **Compression**: Cloudinary (images) and pdf.co (PDFs)
 
 ## Layout
 
@@ -77,8 +77,8 @@ All responses use `{ success, status, message, data }`. Authentication is held i
 
 | Method | Route | Auth | Purpose |
 | --- | --- | --- | --- |
-| `POST` | `/user/register` | — | Create an account |
-| `POST` | `/user/login` | — | Sign in |
+| `POST` | `/user/register` | - | Create an account |
+| `POST` | `/user/login` | - | Sign in |
 | `POST` | `/user/refresh` | refresh cookie | Rotate the session |
 | `POST` | `/user/logout` | optional | Clear the session |
 | `GET` | `/user/profile` | yes | Current user |

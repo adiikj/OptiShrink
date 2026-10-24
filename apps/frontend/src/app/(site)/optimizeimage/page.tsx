@@ -26,7 +26,7 @@ export default function OptimizeImagePage() {
               </h1>
               <p className="mt-3 max-w-xl text-[14px] leading-relaxed text-muted">
                 Oversized photos get scaled down, recompressed, and served in a modern format.
-                Small images are left alone — the profiles only ever limit dimensions.
+                Small images are left alone; the profiles only ever limit dimensions.
               </p>
             </div>
 

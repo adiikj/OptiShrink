@@ -67,22 +67,22 @@ export function AnalyticsView() {
         metrics={[
           {
             label: "Total runs",
-            value: totals ? formatCount(totals.files, "run") : "—",
+            value: totals ? formatCount(totals.files, "run") : "-",
             note: "Images and PDFs combined",
           },
           {
             label: "Space saved",
-            value: totals ? formatBytes(totals.savedBytes) : "—",
+            value: totals ? formatBytes(totals.savedBytes) : "-",
             note: totals ? `${totals.savedPercent}% average reduction` : "From real byte counts",
           },
           {
             label: "Images",
-            value: totals ? formatCount(totals.images, "image") : "—",
+            value: totals ? formatCount(totals.images, "image") : "-",
             note: kinds ? `${formatBytes(kinds.image.compressedBytes)} after` : undefined,
           },
           {
             label: "PDFs",
-            value: totals ? formatCount(totals.pdfs, "PDF") : "—",
+            value: totals ? formatCount(totals.pdfs, "PDF") : "-",
             note: kinds ? `${formatBytes(kinds.pdf.compressedBytes)} after` : undefined,
           },
         ]}
@@ -128,7 +128,7 @@ export function AnalyticsView() {
             <div className="flex flex-1 flex-col items-center justify-center py-5">
               <SavingsGauge percent={totals?.savedPercent ?? 0} size={116} />
               <p className="mt-3 text-[22px] font-semibold tracking-[-0.02em] text-ink">
-                {totals ? formatBytes(totals.savedBytes) : "—"}
+                {totals ? formatBytes(totals.savedBytes) : "-"}
               </p>
               <p className="mt-1 text-[11px] text-muted">
                 {totals ? `from ${formatBytes(totals.originalBytes)} original` : ""}
@@ -140,7 +140,7 @@ export function AnalyticsView() {
                   Original
                 </dt>
                 <dd className="mt-1 font-mono text-[11px] text-ink">
-                  {totals ? formatBytes(totals.originalBytes) : "—"}
+                  {totals ? formatBytes(totals.originalBytes) : "-"}
                 </dd>
               </div>
               <div>
@@ -148,7 +148,7 @@ export function AnalyticsView() {
                   Compressed
                 </dt>
                 <dd className="mt-1 font-mono text-[11px] text-ink">
-                  {totals ? formatBytes(totals.compressedBytes) : "—"}
+                  {totals ? formatBytes(totals.compressedBytes) : "-"}
                 </dd>
               </div>
             </dl>

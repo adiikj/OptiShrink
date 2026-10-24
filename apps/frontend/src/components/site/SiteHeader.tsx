@@ -143,7 +143,7 @@ export function SiteHeader() {
           </div>
 
           <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.06em] text-muted">
-            PDF · JPG · PNG · WebP — up to 20 MB
+            PDF · JPG · PNG · WebP, up to 20 MB
           </p>
         </div>
       ) : null}

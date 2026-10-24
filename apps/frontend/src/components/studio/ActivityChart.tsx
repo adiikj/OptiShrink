@@ -23,7 +23,7 @@ export function ActivityChart({ daily }: { daily: DailyStat[] }) {
                     : "h-[3px] bg-line-strong/35",
                 )}
                 style={saved > 0 ? { height: `${height}%` } : undefined}
-                title={`${formatUtcDay(day.date)} — ${saved > 0 ? `${formatBytes(saved)} saved` : "No activity"}`}
+                title={`${formatUtcDay(day.date)}: ${saved > 0 ? `${formatBytes(saved)} saved` : "No activity"}`}
               />
             </div>
           );

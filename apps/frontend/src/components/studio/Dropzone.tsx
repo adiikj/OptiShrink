@@ -119,7 +119,7 @@ export function Dropzone({
       <p className="mt-1.5 max-w-sm text-[12px] leading-relaxed text-muted">
         or{" "}
         <span className="font-medium text-accent-text underline underline-offset-2">browse files</span>
-        {" — "}
+        {" - "}
         {kind === "image" ? "JPG, PNG, WebP, or GIF" : "PDF document"} up to 20 MB each.
       </p>
       <div className="mt-5 flex items-center gap-2">

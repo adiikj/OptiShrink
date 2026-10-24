@@ -56,7 +56,7 @@ export function SignInForm() {
       <p className="label-mono">Welcome back</p>
       <h1 className="display mt-3 text-[2rem]">Sign in to your account</h1>
       <p className="mt-3 max-w-sm text-[13px] leading-relaxed text-muted">
-        Pick up where you left off — history, batch runs, and every byte you saved.
+        Pick up where you left off: history, batch runs, and every byte you saved.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-7 space-y-5" noValidate>

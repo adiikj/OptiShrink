@@ -25,7 +25,7 @@ export function AboutView() {
           </p>
           <div className="mt-4 space-y-3 text-[12px] leading-relaxed text-muted">
             <p>
-              The first version of this project was built while learning — React on the front, a
+              The first version of this project was built while learning: React on the front, a
               Node API on the back, MongoDB underneath. This revision replaces the data layer with
               PostgreSQL and Drizzle, tightens the upload path, and rebuilds the interface around
               the actual workflow.

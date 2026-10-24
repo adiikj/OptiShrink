@@ -45,7 +45,7 @@ export default function NotFound() {
               <dl>
                 {[
                   ["Status", "Not found"],
-                  ["File", "—"],
+                  ["File", "-"],
                   ["Compression", "Not run"],
                   ["Weight", "0 B"],
                 ].map(([label, value]) => (

@@ -119,22 +119,22 @@ export function DashboardOverview() {
         metrics={[
           {
             label: "Files compressed",
-            value: totals ? formatCount(totals.files, "file") : "—",
+            value: totals ? formatCount(totals.files, "file") : "-",
             note: "Across the whole account",
           },
           {
             label: "Space saved",
-            value: totals ? formatBytes(totals.savedBytes) : "—",
+            value: totals ? formatBytes(totals.savedBytes) : "-",
             note: totals ? `${totals.savedPercent}% smaller overall` : "From real byte counts",
           },
           {
             label: "Images",
-            value: totals ? formatCount(totals.images, "image") : "—",
+            value: totals ? formatCount(totals.images, "image") : "-",
             note: "Optimized through Cloudinary",
           },
           {
             label: "PDFs",
-            value: totals ? formatCount(totals.pdfs, "PDF") : "—",
+            value: totals ? formatCount(totals.pdfs, "PDF") : "-",
             note: "Compressed through pdf.co",
           },
         ]}
@@ -240,7 +240,7 @@ export function DashboardOverview() {
           <div className="flex flex-1 flex-col items-center justify-center py-5">
             <SavingsGauge percent={totals?.savedPercent ?? 0} size={116} />
             <p className="mt-3 text-[22px] font-semibold tracking-[-0.02em] text-ink">
-              {totals ? formatBytes(totals.savedBytes) : "—"}
+              {totals ? formatBytes(totals.savedBytes) : "-"}
             </p>
             <p className="mt-1 text-[11px] text-muted">
               {totals && totals.files > 0
@@ -255,7 +255,7 @@ export function DashboardOverview() {
                 Original
               </dt>
               <dd className="mt-1 font-mono text-[11px] text-ink">
-                {totals ? formatBytes(totals.originalBytes) : "—"}
+                {totals ? formatBytes(totals.originalBytes) : "-"}
               </dd>
             </div>
             <div>
@@ -263,7 +263,7 @@ export function DashboardOverview() {
                 Result
               </dt>
               <dd className="mt-1 font-mono text-[11px] text-ink">
-                {totals ? formatBytes(totals.compressedBytes) : "—"}
+                {totals ? formatBytes(totals.compressedBytes) : "-"}
               </dd>
             </div>
           </dl>
