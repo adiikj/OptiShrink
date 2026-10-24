@@ -4,4 +4,9 @@ node_modules/
 # Environment variables
 .env
 
-firebase.json
+# Build output
+dist/
+
+# Temporary uploads
+public/temp/*
+!public/temp/.gitkeep

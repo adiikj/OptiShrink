@@ -1,71 +1,74 @@
 import type { NextFunction, Request, Response } from "express";
+import { eq } from "drizzle-orm";
+import { db } from "../db/index.js";
+import { users, type AuthUser } from "../db/schema.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import jwt from "jsonwebtoken";
-import { User, type IUser } from "../models/user.models.js";
+import { verifyAccessToken } from "../utils/tokens.js";
 
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace Express {
-    interface Request {
-      user?: IUser | null;
-    }
+const userColumns = {
+  id: users.id,
+  name: users.name,
+  username: users.username,
+  email: users.email,
+  createdAt: users.createdAt,
+};
+
+function readToken(req: Request): string | null {
+  const cookieToken = req.cookies?.accessToken as string | undefined;
+  if (cookieToken) return cookieToken;
+
+  const header = req.header("Authorization");
+  if (header?.startsWith("Bearer ")) {
+    return header.slice("Bearer ".length).trim();
   }
+  return null;
 }
 
-interface DecodedToken {
-  _id: string;
+async function findUserById(id: string): Promise<AuthUser | null> {
+  const [user] = await db.select(userColumns).from(users).where(eq(users.id, id)).limit(1);
+  return user ?? null;
 }
 
-export const verifyJWT = asyncHandler(async (req: Request, res: Response, next: NextFunction) => { //res use nhi huya hai toh uski jagah _ use kr skte hai production grade code ke liye
-  try {
-    const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
-
+export const requireAuth = asyncHandler(
+  async (req: Request, _res: Response, next: NextFunction) => {
+    const token = readToken(req);
     if (!token) {
-      new ApiError(401, "Unauthorized");
+      throw new ApiError(401, "Authentication required");
     }
 
-    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string) as DecodedToken;
-    const user = await User.findById(decodedToken?._id).select("-password -refreshToken");
+    let userId: string;
+    try {
+      userId = verifyAccessToken(token).sub;
+    } catch {
+      throw new ApiError(401, "Your session has expired. Please sign in again.");
+    }
 
+    const user = await findUserById(userId);
     if (!user) {
-      //discuss about frontend
-      throw new ApiError(404, "Invalid Access Token");
+      throw new ApiError(401, "Your session is no longer valid.");
     }
 
     req.user = user;
     next();
-  } catch (error) {
-    throw new ApiError(401, "Invalid Access Token");
-  }
-});
+  },
+);
 
-export const optionalVerifyJWT = asyncHandler(async (req: Request, _: Response, next: NextFunction) => {
-  try {
-    // Retrieve token from cookies or headers
-    const token =
-      req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "");
-
+export const optionalAuth = asyncHandler(
+  async (req: Request, _res: Response, next: NextFunction) => {
+    const token = readToken(req);
     if (!token) {
-      req.user = null; // If no token, set user to null for unauthenticated access
-      return next(); // Proceed without throwing an error
+      req.user = null;
+      return next();
     }
 
-    // Verify the token
-    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string) as DecodedToken;
-
-    // Find the user associated with the token
-    const user = await User.findById(decodedToken?._id).select("-password -refreshToken");
-
-    if (!user) {
-      throw new ApiError(404, "Invalid Access Token");
+    try {
+      const userId = verifyAccessToken(token).sub;
+      req.user = await findUserById(userId);
+    } catch {
+      req.user = null;
     }
 
-    req.user = user; // Attach user details to the request
-    next(); // Continue to the next middleware or route handler
-  } catch (error) {
-    // If token verification fails, allow unauthenticated access
-    req.user = null;
-    next(); // Do not throw an error, continue processing the request
-  }
-});
+    next();
+  },
+);

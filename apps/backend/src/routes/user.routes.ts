@@ -1,27 +1,24 @@
 import { Router } from "express";
 import {
-  registerUser,
-  loginUser,
-  logoutUser,
   getProfile,
-  getAllLinks,
-  deleteLink,
-} from "../controllers/user.controller.js";
-
-import { verifyJWT } from "../middlewares/auth.middleware.js";
+  login,
+  logout,
+  refresh,
+  register,
+} from "../controllers/auth.controller.js";
+import { deleteFile, getStats, listFiles } from "../controllers/file.controller.js";
+import { optionalAuth, requireAuth } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-// Public Routes
-router.post("/register", registerUser); // User registration
-router.post("/login", loginUser); // User login
+router.post("/register", register);
+router.post("/login", login);
+router.post("/refresh", refresh);
+router.post("/logout", optionalAuth, logout);
 
-// Protected Routes (Require Authentication)
-router.post("/logout", verifyJWT, logoutUser); // User logout (JWT-protected)
-
-router.get("/profile", verifyJWT, getProfile); // Get user profile (JWT-protected)
-
-router.get("/getlinks", verifyJWT, getAllLinks); // Get all compressed image links (JWT-protected)
-router.delete("/deletelink", verifyJWT, deleteLink); // Delete all compressed image links (JWT-protected)
+router.get("/profile", requireAuth, getProfile);
+router.get("/stats", requireAuth, getStats);
+router.get("/files", requireAuth, listFiles);
+router.delete("/files/:id", requireAuth, deleteFile);
 
 export default router;

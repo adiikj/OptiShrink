@@ -1,22 +1,35 @@
-import dotenv from "dotenv";
 import { app } from "./app.js";
-import connectDB from "./db/index.js";
+import { env } from "./config/env.js";
+import { checkDatabaseConnection, closeDatabaseConnection } from "./db/index.js";
 
-dotenv.config();
+async function start(): Promise<void> {
+  await checkDatabaseConnection();
+  console.log("Database connection established.");
 
-connectDB()
-  .then(() => {
-    (app as unknown as NodeJS.EventEmitter).on("error", (error) => {
-      console.error("Error in starting the server", error);
-      throw error;
-    });
-
-    const port = Number(process.env.PORT);
-    app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
-    });
-  })
-  .catch((error) => {
-    console.error("Error in connecting to the database");
-    throw error;
+  const server = app.listen(env.PORT, () => {
+    console.log(`OptiShrink API listening on http://localhost:${env.PORT}`);
   });
+
+  let shuttingDown = false;
+
+  const shutdown = async (signal: string): Promise<void> => {
+    if (shuttingDown) return;
+    shuttingDown = true;
+    console.log(`Received ${signal}. Shutting down.`);
+
+    server.close(async () => {
+      await closeDatabaseConnection();
+      process.exit(0);
+    });
+
+    setTimeout(() => process.exit(1), 10_000).unref();
+  };
+
+  process.on("SIGINT", () => void shutdown("SIGINT"));
+  process.on("SIGTERM", () => void shutdown("SIGTERM"));
+}
+
+start().catch((error) => {
+  console.error("Failed to start OptiShrink API:", error);
+  process.exit(1);
+});

@@ -1,16 +1,27 @@
-import { DB_NAME } from "../constants.js";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-dotenv.config();
+import { drizzle } from "drizzle-orm/node-postgres";
+import pg from "pg";
+import { env, isProduction } from "../config/env.js";
+import * as schema from "./schema.js";
 
-const connectDB = async (): Promise<void> => {
+const { Pool } = pg;
+
+export const pool = new Pool({
+  connectionString: env.DATABASE_URL,
+  max: isProduction ? 20 : 5,
+  ssl: env.DATABASE_URL.includes("sslmode=require") ? true : undefined,
+});
+
+export const db = drizzle(pool, { schema });
+
+export async function checkDatabaseConnection(): Promise<void> {
+  const client = await pool.connect();
   try {
-    const connectionInstance = await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`);
-    console.log(`Connected to the MongoDB ${connectionInstance.connection.host}`);
-  } catch (error) {
-    console.error("Error in connecting to the database");
-    throw error;
+    await client.query("select 1");
+  } finally {
+    client.release();
   }
-};
+}
 
-export default connectDB;
+export async function closeDatabaseConnection(): Promise<void> {
+  await pool.end();
+}

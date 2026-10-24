@@ -1,15 +1,15 @@
-class ApiResponse<T = unknown> {
-  status: number;
-  message: string;
-  data: T;
-  success: boolean;
+import type { Response } from "express";
 
-  constructor(status: number, message: string = "Success", data: T) {
-    this.status = status;
-    this.message = message;
-    this.data = data;
-    this.success = status < 400;
-  }
+export function sendSuccess<T>(
+  res: Response,
+  status: number,
+  data: T,
+  message = "Success",
+): Response {
+  return res.status(status).json({
+    success: true,
+    status,
+    message,
+    data,
+  });
 }
-
-export { ApiResponse };

@@ -1,29 +1,21 @@
-# Use Node.js base image
-FROM node:18
+FROM node:22-slim
 
-# Install dependencies (system-level)
-RUN apt-get update && apt-get install -y \
-    libvips-dev \
-    poppler-utils \
-    build-essential
-
-# Set working directory
 WORKDIR /app
 
-# Copy package files
+# Native build tools cover bcrypt when a prebuilt binary is unavailable.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends python3 make g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install dependencies first so the layer is cached across source changes.
 COPY package*.json ./
+RUN npm install --include=dev
 
-# Install Node.js dependencies
-RUN npm install
-
-# Copy the rest of the application code
 COPY . .
-
-# Compile TypeScript
 RUN npm run build
 
-# Expose the application port
-EXPOSE 3000
+ENV NODE_ENV=production
+EXPOSE 5000
 
-# Start the application
-CMD ["npm", "run", "start"]
+# Apply pending Drizzle migrations before starting the API.
+CMD ["sh", "-c", "npm run db:migrate && npm start"]
