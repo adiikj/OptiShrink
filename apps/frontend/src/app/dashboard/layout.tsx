@@ -1,5 +1,5 @@
-import NoHeaderFooterLayout from "@/components/layout/NoHeaderFooterLayout";
+import { StudioShell } from "@/components/studio/StudioShell";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  return <NoHeaderFooterLayout>{children}</NoHeaderFooterLayout>;
+  return <StudioShell>{children}</StudioShell>;
 }

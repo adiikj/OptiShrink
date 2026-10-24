@@ -1,11 +1,23 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack(config) {
-    // pdfjs-dist ships an optional Node.js canvas fallback that isn't used
-    // in the browser bundle; without this alias webpack fails trying to
-    // resolve the native `canvas` binding.
-    config.resolve.alias.canvas = false;
-    return config;
+  reactStrictMode: true,
+  poweredByHeader: false,
+  devIndicators: false,
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+        ],
+      },
+    ];
   },
 };
 

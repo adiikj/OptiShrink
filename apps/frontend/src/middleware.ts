@@ -6,13 +6,15 @@ const PROTECTED_PAGES = ["/dashboard"];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const isAuthenticated = Boolean(request.cookies.get("accessToken")?.value);
+  const hasSession = Boolean(
+    request.cookies.get("accessToken")?.value || request.cookies.get("refreshToken")?.value,
+  );
 
-  if (AUTH_PAGES.includes(pathname) && isAuthenticated) {
+  if (AUTH_PAGES.includes(pathname) && hasSession) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  if (PROTECTED_PAGES.some((page) => pathname.startsWith(page)) && !isAuthenticated) {
+  if (PROTECTED_PAGES.some((page) => pathname.startsWith(page)) && !hasSession) {
     return NextResponse.redirect(new URL("/signin", request.url));
   }
 
